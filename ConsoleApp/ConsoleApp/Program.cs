@@ -40,9 +40,9 @@ struct IngredientList
     {
         List<int> multiples = [];
 
-        foreach (IngredientName key in List.Keys)
+        foreach (IngredientName key in other.List.Keys)
         {
-            if (!other.List.ContainsKey(key)) { continue; }
+            if (!List.ContainsKey(key)) { return 0; }
 
             multiples.Add(List[key] / other.List[key]);
         }
@@ -58,7 +58,15 @@ struct IngredientList
 
         foreach (IngredientName key in other.List.Keys)
         {
-            result.List.Add(key, List.TryGetValue(key, out int value) ? value - (other.List[key] * times): -other.List[key] * times);
+            int new_value = List.TryGetValue(key, out int value) ? value - (other.List[key] * times) : -other.List[key] * times;
+
+            if (new_value <= 0)
+            {
+                result.List.Remove(key);
+                continue;
+            }
+
+            result.List.Add(key, new_value);
         }
 
         return result;
@@ -132,8 +140,18 @@ class Main
                 {IngredientName.MILK, 200},
                 {IngredientName.FLOUR, 500},
                 {IngredientName.ONION, 4},
-                {IngredientName.MUSHROOM, 100},
+                {IngredientName.MUSHROOM, 500},
                 {IngredientName.CARROT, 4},
+                {IngredientName.RICE, 1000 },
+                {IngredientName.BACON, 200 },
+                {IngredientName.PEAS, 500 },
+                {IngredientName.SOY_SAUCE, 250 },
+                {IngredientName.ZUCCHINI, 3 },
+                {IngredientName.CHEESE, 500 },
+                {IngredientName.VEGETABLE_OIL, 500 },
+                {IngredientName.PASTA, 250 },
+                {IngredientName.OLIVE_OIL, 500 },
+                {IngredientName.CHICKEN, 250 },
             }
     };
 
@@ -239,7 +257,7 @@ class Main
             RecipeDesc desc = RecipeDescs[name];
             IngredientList multipliedList = desc.Ingredients.Multiply(serves);
 
-            Console.WriteLine(desc.Name);
+            Console.WriteLine($"{desc.Name} ({serves} serves)");
             Console.WriteLine(IngredientListAsString(multipliedList));
 
             Console.WriteLine("[1] Make and Remove Ingredients form Pantry");
