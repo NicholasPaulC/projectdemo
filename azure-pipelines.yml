@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+
+- script: dotnet restore ConsoleApp.sln
+  displayName: 'Restore packages'
+
+- script: dotnet build ConsoleApp.sln --configuration $(buildConfiguration)
+  displayName: 'Build solution'
+
+- script: dotnet test ConsoleApp.sln --configuration $(buildConfiguration) --no-build --verbosity normal
+  displayName: 'Run tests'
