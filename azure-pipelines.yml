@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: 'SelfHostedWin'
+  name: 'SelfHostedWin'
 
 variables:
   buildConfiguration: 'Release'
