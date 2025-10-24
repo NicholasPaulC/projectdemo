@@ -4,7 +4,7 @@ trigger:
       - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: 'SelfHostedWin'
 
 variables:
   buildConfiguration: 'Release'
@@ -15,11 +15,11 @@ steps:
     packageType: 'sdk'
     version: '8.0.x'
 
-- script: dotnet restore ConsoleApp.sln
+- script: dotnet restore ConsoleApp/ConsoleApp.sln
   displayName: 'Restore packages'
 
-- script: dotnet build ConsoleApp.sln --configuration $(buildConfiguration)
+- script: dotnet build ConsoleApp/ConsoleApp.sln --configuration $(buildConfiguration)
   displayName: 'Build solution'
 
-- script: dotnet test ConsoleApp.sln --configuration $(buildConfiguration) --no-build --verbosity normal
+- script: dotnet test ConsoleApp/ConsoleApp.sln --no-build --verbosity normal
   displayName: 'Run tests'
