@@ -3,23 +3,21 @@ trigger:
     include:
       - main
 
+pr:
+  branches:
+    include:
+      - main
+
 pool:
-  name: 'SelfHostedWin'
+  name: SelfHostedWin          
+  demands:
+    - Agent.OS -equals Windows_NT
 
 variables:
   buildConfiguration: 'Release'
+  solution: 'ConsoleApp.sln'   
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '8.0.x'
-
-- script: dotnet restore ConsoleApp/ConsoleApp.sln
-  displayName: 'Restore packages'
-
-- script: dotnet build ConsoleApp/ConsoleApp.sln --configuration $(buildConfiguration)
-  displayName: 'Build solution'
-
-- script: dotnet test ConsoleApp/ConsoleApp.sln --no-build --verbosity normal
-  displayName: 'Run tests'
+  - checkout: self
+    clean: true
+    fetchDepth: 0
