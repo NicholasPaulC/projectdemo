@@ -5,8 +5,7 @@ using System.IO;
 Main main = new();
 main.Run();
 
-
-enum IngredientName
+public enum IngredientName
 {
     EGG,
     MILK,
@@ -28,7 +27,7 @@ enum IngredientName
 }
 
 
-struct IngredientList
+public struct IngredientList
 {
     public Dictionary<IngredientName, int> List = [];
 
